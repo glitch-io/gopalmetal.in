@@ -8,34 +8,39 @@ const imageData = [
 ];
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState("next");
+
   useEffect(() => {
-    const intervalId = setInterval(nextSlide, 3000);
+    const intervalId = setInterval(nextSlide, 5000);
     return () => clearInterval(intervalId);
   }, [currentIndex]);
+
   const nextSlide = () => {
+    setDirection("next");
     setCurrentIndex((currentIndex + 1) % imageData.length);
   };
 
   const prevSlide = () => {
+    setDirection("prev");
     setCurrentIndex((currentIndex - 1 + imageData.length) % imageData.length);
   };
 
   return (
     <div className="carousel relative overflow-hidden">
-      <div className="carousel-inner flex">
+      <div
+        className="carousel-inner flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
         {imageData.map((image, index) => (
-          <div
-            key={index}
-            className={`carousel-item ${index === currentIndex ? "block" : "hidden"} w-full z-[-1]`}
-          >
+          <div key={index} className={`carousel-item w-full flex-shrink-0`}>
             <img
-              className="h-screen w-full bg-cover"
+              className="h-screen w-full bg-cover bg-center"
               src={image.imageUrl}
               alt={image.altText}
             />
-            <div className="absolute z-1 top-1/2 px-16 lg:pl-[200px]">
-              <h1 className="lg:text-6xl font-bold text-white">
-                Welcome To{" "}
+            <div className="absolute z-1 top-1/2 px-16 lg:pl-[200px] w-full">
+              <h1 className="text-3xl lg:text-6xl font-bold text-white">
+                Welcome To
                 <span className="block text-blue-800">
                   Gopal Metal Industries
                 </span>
